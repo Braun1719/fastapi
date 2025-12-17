@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рабочие места пользователей</title>
+    <link rel="stylesheet" href="../static/css/styles_main.css">
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <button class="menu-toggle" id="menuToggle">☰ Меню</button>
+        
+        <form class="search-container" method="get" id="searchForm">
+            <input
+                type="text"
+                name="login"
+                class="search-input"
+                placeholder="Введите логин пользователя"
+                value="{{ login or '' }}"
+            >
+            <button type="submit" class="search-button">Поиск</button>
+        </form>
+
+        <div class="filter-dropdown">
+            <button class="filter-button" id="filterButton">
+                Фильтр {% if machine_type and machine_type != 'all' %}✓{% endif %}
+            </button>
+            <div class="filter-content" id="filterContent">
+                <form id="filterForm" method="get">
+                    <!-- Скрытое поле для логина -->
+                    <input type="hidden" name="login" value="{{ login or '' }}">
+                    
+                    <div class="filter-group">
+                        <label>Тип машины:</label>
+                        <select class="filter-select" name="machine_type">
+                            <option value="all" {% if machine_type == 'all' %}selected{% endif %}>Все</option>
+                            <option value="physical" {% if machine_type == 'physical' %}selected{% endif %}>Физическая</option>
+                            <option value="virtual" {% if machine_type == 'virtual' %}selected{% endif %}>Виртуальная</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button type="submit" class="apply-filter">Применить</button>
+                        {% if machine_type and machine_type != 'all' %}
+                        <a href="?login={{ login or '' }}" class="clear-filter" style="display:inline-block; background:#e74c3c; color:white; padding:8px 15px; border-radius:4px; text-decoration:none; width: 100%; font-size: 14px; text-align: center; margin-top: 5px;">Сбросить</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="user-login-container">
+    <span class="user-icon">👤</span>
+    <span class="user-login-text">{{ user_login }}</span>
+</div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar" id="sidebar">
+        <nav class="menu-items">
+            <button class="menu-item">Главная</button>
+            <button class="menu-item">Пользователи</button>
+            <button class="menu-item">Отчёты</button>
+            <button class="menu-item">Настройки</button>
+            <!-- Кнопка выхода в меню -->
+            <a href="/logout" class="menu-item logout-button">
+                Выйти
+            </a>
+        </nav>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content" id="mainContent">
+        <div class="content-area">
+            <h1>Информация о рабочих местах</h1>
+            <p>Поиск физических и виртуальных машин по логину пользователя</p>
+
+            {% if data %}
+            <!-- ===== TABLE WITH DATA ===== -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Логин</th>
+                        <th>Имя машины</th>
+                        <th>Тип машины</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        <td>{{ row.login }}</td>
+                        <td>{{ row.machine_name }}</td>
+                        <td>
+                            {% if row.machine_type == "physical" %}
+                                Физическая
+                            {% elif row.machine_type == "virtual" %}
+                                Виртуальная
+                            {% else %}
+                                {{ row.machine_type }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% elif login %}
+            <!-- ===== NO DATA ===== -->
+            <div class="no-data show">
+                <div class="warning-sign">⚠</div>
+                <h2>Данные не найдены</h2>
+                <p>По логину "{{ login }}" информация отсутствует</p>
+            </div>
+            {% endif %}
+
+            {% if not login and not data %}
+            <!-- ===== INITIAL STATE ===== -->
+            <div class="no-data">
+                <div class="info-sign">ℹ️</div>
+                <h2>Начните поиск</h2>
+                <p>Введите логин пользователя в поле поиска для получения информации</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>
+                © 2025 <span class="watermark">IT Inventory System</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Подключение внешнего JavaScript файла -->
+    <script src="../static/script.js"></script>
+    
+    {% if not cookies_accepted %}
+    <div id="cookieReminder" class="cookie-reminder">
+        <p>🍪 Вы не полностью приняли использование cookies. Некоторые функции могут быть ограничены.</p>
+        <button onclick="window.location.href='/'">Настроить cookies</button>
+    </div>
+
+    <style>
+    .cookie-reminder {
+        position: fixed;
+        bottom: 5px;
+        right: 20px;
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 8px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        backdrop-filter: blur(10px);
+        z-index: 999;
+    }
+
+    .cookie-reminder p {
+        margin: 0;
+        color: #fcfcfc;
+        font-size: 14px;
+    }
+
+    .cookie-reminder button {
+        background: #ffc107;
+        color: #856404;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .cookie-reminder button:hover {
+        background: #e0a800;
+    }
+    </style>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,478 @@
+/* ==================== СТИЛИ ДЛЯ ОШИБОК ФОРМЫ ==================== */
+/* Ваши существующие стили ошибок остаются здесь... */
+
+/* ==================== МОДАЛЬНОЕ ОКНО COOKIES ==================== */
+/* Эти стили должны быть ДО медиа-запросов! */
+
+.cookie-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    animation: fadeIn 0.3s ease;
+}
+
+.cookie-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cookie-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.cookie-modal-dialog {
+    position: relative;
+    z-index: 100000;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideInDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cookie-modal-content {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 20px;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 0 30px rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+}
+
+/* Заголовок модального окна */
+.cookie-modal-header {
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 20px;
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.15), rgba(52, 168, 83, 0.15));
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.cookie-icon {
+    margin-right: 15px;
+    color: #4285f4;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+}
+
+.cookie-modal-title {
+    flex: 1;
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.cookie-close-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cookie-close-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+    transform: rotate(90deg);
+}
+
+/* Тело модального окна */
+.cookie-modal-body {
+    padding: 25px 30px;
+}
+
+.cookie-description {
+    color: #555;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Типы cookies */
+.cookie-types {
+    margin-bottom: 25px;
+}
+
+.cookie-type {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+.cookie-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cookie-type-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cookie-type-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+}
+
+.cookie-type h3 {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.cookie-required {
+    background: linear-gradient(135deg, #34a853, #4285f4);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cookie-type-desc {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    padding-left: 48px;
+}
+
+/* Toggle для cookies */
+.cookie-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.cookie-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(20px);
+}
+
+/* Ссылки */
+.cookie-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.cookie-link {
+    color: #4285f4;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.cookie-link:hover {
+    color: #3367d6;
+    text-decoration: underline;
+}
+
+.cookie-link::after {
+    content: '↗';
+    margin-left: 4px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Футер модального окна */
+.cookie-modal-footer {
+    padding: 20px 30px;
+    background: rgba(0, 0, 0, 0.02);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.cookie-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.reject-btn {
+    background: transparent;
+    color: #666;
+    border: 2px solid #e1e5e9;
+}
+
+.reject-btn:hover {
+    background: #f8f9fa;
+    border-color: #d93025;
+    color: #d93025;
+    transform: translateY(-2px);
+}
+
+.accept-selected-btn {
+    background: linear-gradient(135deg, #fbbc05, #ea4335);
+    color: white;
+}
+
+.accept-selected-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(251, 188, 5, 0.3);
+}
+
+.accept-all-btn {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: white;
+}
+
+.accept-all-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+}
+
+/* Анимация закрытия */
+@keyframes slideOutUp {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+}
+
+.cookie-modal.closing {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+.cookie-modal.closing .cookie-modal-dialog {
+    animation: slideOutUp 0.3s ease forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Отключение скролла страницы при открытом модальном окне */
+body.cookie-modal-open {
+    overflow: hidden;
+}
+
+/* Уведомления для cookies */
+.cookie-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 100000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-left: 4px solid #34a853;
+    max-width: 350px;
+}
+
+.cookie-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.cookie-notification-error {
+    border-left-color: #ea4335;
+}
+
+.cookie-notification-info {
+    border-left-color: #4285f4;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.notification-content span {
+    flex: 1;
+}
+
+/* ==================== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА COOKIES ==================== */
+
+@media (max-width: 576px) {
+    .cookie-modal-dialog {
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .cookie-modal-header {
+        padding: 20px;
+    }
+    
+    .cookie-modal-title {
+        font-size: 18px;
+    }
+    
+    .cookie-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+    
+    .cookie-modal-body {
+        padding: 20px;
+    }
+    
+    .cookie-modal-footer {
+        padding: 15px 20px;
+        justify-content: center;
+    }
+    
+    .cookie-btn {
+        min-width: 100px;
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .cookie-type-desc {
+        padding-left: 0;
+        margin-top: 10px;
+    }
+    
+    .cookie-type-header {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .left-panel::after {
+        display: none;
+    }
+    
+    .right-panel::before {
+        display: none;
+    }
+    
+    .left-panel {
+        padding: 30px 20px;
+    }
+    
+    .right-panel {
+        padding: 30px 20px;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .social-buttons {
+        flex-direction: column;
+    }
+    
+    .social-btn {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация - Система учета АРМ</title>
+    <link rel="stylesheet" href="../static/css/styles_index.css">
+    <link rel="stylesheet" href="../static/css/styles_cookies.css">
+    
+</head>
+<body>
+<div class="video-background">
+    <video autoplay muted loop playsinline>
+        <source src="../static/video/binary_code.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+    <div class="video-overlay"></div>
+</div>
+    <div class="container">
+
+        <div class="left-panel">
+            <div class="glass-reflection"></div>
+            <div class="logo-container">
+                <div class="logo-placeholder">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L5,8.09V15.91L12,19.85L19,15.91V8.09L12,4.15M12,6.23L16.9,9.06L12,11.89L7.1,9.06L12,6.23M17,14.89L13,17.2V13.62L17,11.31V14.89Z" />
+                    </svg>
+                </div>
+                <h2 class="system-name">IT Inventory System</h2>
+            </div>
+            <p class="system-description">Единая платформа мониторинга и учета рабочих станций в вашей организации</p>
+        </div>
+        
+        <div class="right-panel">
+            <div class="login-header">
+                <h1>Вход в систему</h1>
+                <p>Пожалуйста, войдите в свой аккаунт</p>
+            </div>
+            
+            <form class="login-form" id="loginForm" method="POST" action="/login">
+    {% if error %}
+    <div class="alert alert-error">
+        {{ error }}
+    </div>
+    {% endif %}
+    
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="Введите вашу почту"
+            required
+            value="{{ email_value or '' }}"
+        >
+        {% if email_error %}
+        <span class="error-message" id="emailError" style="display: block;">
+            {{ email_error }}
+        </span>
+        {% else %}
+        <span class="error-message" id="emailError"></span>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        <label for="password">Пароль</label>
+        <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Введите ваш пароль"
+            required
+        >
+        {% if password_error %}
+        <span class="error-message" id="passwordError" style="display: block;">
+            {{ password_error }}
+        </span>
+        {% else %}
+        <span class="error-message" id="passwordError"></span>
+        {% endif %}
+    </div>
+    
+    <div class="form-options">
+        <label class="checkbox-container">
+            <input type="checkbox" id="remember" name="remember" value="on">
+            <span class="checkmark"></span>
+            Запомнить меня
+        </label>
+        <a href="#" class="forgot-password">Забыли пароль?</a>
+    </div>
+    
+    <button type="submit" class="login-btn">Войти</button>
+    
+    <div class="register-link">
+        <p>Нет аккаунта? <a href="#">Зарегистрироваться</a></p>
+    </div>
+    
+    <div class="divider">
+        <div class="divider-text">Или войдите с помощью</div>
+    </div>
+</form>
+            
+            <div class="social-login">
+                <div class="social-buttons">
+                    <button class="social-btn google-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button class="social-btn github-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% if show_cookie_banner %}
+<div id="cookieModal" class="cookie-modal active">
+    <div class="cookie-modal-dialog">
+        <div class="cookie-modal-content">
+            <!-- Заголовок с иконкой -->
+            <div class="cookie-modal-header">
+                <div class="cookie-icon">
+                    <svg viewBox="0 0 24 24" width="32" height="32">
+                        <path fill="currentColor" d="M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A9,9 0 0,0 21,12C21,11.5 20.96,11 20.87,10.5C20.6,10 20,10 20,10H18V9C18,8 17,8 17,8H15V7C15,6 14,6 14,6H13V4C13,3 12,3 12,3M9.5,6A1.5,1.5 0 0,1 11,7.5A1.5,1.5 0 0,1 9.5,9A1.5,1.5 0 0,1 8,7.5A1.5,1.5 0 0,1 9.5,6M6.5,10A1.5,1.5 0 0,1 8,11.5A1.5,1.5 0 0,1 6.5,13A1.5,1.5 0 0,1 5,11.5A1.5,1.5 0 0,1 6.5,10M11.5,11A1.5,1.5 0 0,1 13,12.5A1.5,1.5 0 0,1 11.5,14A1.5,1.5 0 0,1 10,12.5A1.5,1.5 0 0,1 11.5,11M16.5,13A1.5,1.5 0 0,1 18,14.5A1.5,1.5 0 0,1 16.5,16A1.5,1.5 0 0,1 15,14.5A1.5,1.5 0 0,1 16.5,13M11,16A1.5,1.5 0 0,1 12.5,17.5A1.5,1.5 0 0,1 11,19A1.5,1.5 0 0,1 9.5,17.5A1.5,1.5 0 0,1 11,16Z"/>
+                    </svg>
+                </div>
+                <h2 class="cookie-modal-title">Использование файлов cookie</h2>
+                <button type="button" class="cookie-close-btn" onclick="closeCookieModal()" aria-label="Закрыть">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Контент модального окна -->
+            <div class="cookie-modal-body">
+                <p class="cookie-description">
+                    Мы используем файлы cookie для обеспечения работы сайта, анализа трафика 
+                    и персонализации контента. Некоторые файлы cookie необходимы для работы 
+                    основных функций сайта, другие помогают нам улучшить пользовательский опыт.
+                </p>
+                
+                <div class="cookie-types">
+                    <div class="cookie-type essential">
+                        <div class="cookie-type-header">
+                            <span class="cookie-type-icon">🔒</span>
+                            <h3>Обязательные</h3>
+                            <span class="cookie-required">Обязательно</span>
+                        </div>
+                        <p class="cookie-type-desc">
+                            Необходимы для работы сайта. Без них некоторые функции могут быть недоступны.
+                        </p>
+                    </div>
+                    
+                    <div class="cookie-type functional">
+                        <div class="cookie-type-header">
+                            <span class="cookie-type-icon">⚙️</span>
+                            <h3>Функциональные</h3>
+                            <label class="cookie-toggle">
+                                <input type="checkbox" id="functionalToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-type-desc">
+                            Запоминают ваши настройки и предпочтения для более удобного использования сайта.
+                        </p>
+                    </div>
+                    
+                    <div class="cookie-type session">
+                        <div class="cookie-type-header">
+                            <span class="cookie-type-icon">👤</span>
+                            <h3>Сессионные</h3>
+                            <label class="cookie-toggle">
+                                <input type="checkbox" id="sessionToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-type-desc">
+                            Обеспечивают безопасность при входе в систему и запоминают вашу сессию.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="cookie-links">
+                    <a href="/privacy" target="_blank" class="cookie-link">Политика конфиденциальности</a>
+                    <a href="/cookies" target="_blank" class="cookie-link">Подробнее о cookies</a>
+                </div>
+            </div>
+            
+            <!-- Футер модального окна с кнопками -->
+            <div class="cookie-modal-footer">
+                <button type="button" class="cookie-btn reject-btn" onclick="rejectAllCookies()">
+                    Отклонить все
+                </button>
+                <button type="button" class="cookie-btn accept-selected-btn" onclick="acceptSelectedCookies()">
+                    Принять выбранные
+                </button>
+                <button type="button" class="cookie-btn accept-all-btn" onclick="acceptAllCookies()">
+                    Принять все
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Затемнение фона -->
+    <div class="cookie-modal-backdrop"></div>
+</div>
+
+<script src="../static/js/cookies.js"></script>
+<script src="../static/js/script.js"></script>
+{% endif %}  
+</body>
+</html>
