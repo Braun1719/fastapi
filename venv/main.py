@@ -11,6 +11,7 @@ from typing import Optional, Tuple, Dict, Any
 import json
 import logging
 import uvicorn
+import os
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -20,9 +21,12 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+
+DB_PATH = os.path.join("venv", "newdb")
+
 def get_db():
     """Создаем новое соединение каждый раз"""
-    conn = sqlite3.connect("newdb", check_same_thread=False)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -112,7 +116,7 @@ def create_session(user_id: int, user_login: str, email: str, request: Request,
         max_age = 7 * 24 * 60 * 60  # 7 дней в секундах
     else:
         # Обычная сессия - 30 минут
-        session_duration = timedelta(minutes=30)
+        session_duration = timedelta(minutes=60)
         max_age = 30 * 60  # 30 минут в секундах
     
     expires_at = datetime.now() + session_duration
@@ -199,7 +203,7 @@ async def periodic_session_cleanup():
     """
     while True:
         try:
-            await asyncio.sleep(300)  # 5 минут
+            await asyncio.sleep(3600)  # 5 минут
             
             logger.info("Запуск периодической очистки истекших сессий...")
             deleted = cleanup_expired_sessions()
