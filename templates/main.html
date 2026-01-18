@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Рабочие места пользователей</title>
     <link rel="stylesheet" href="../static/css/styles_main.css">
+    <link rel="stylesheet" href="../static/css/styles_coockies_main.css"
 </head>
+
 <body>
     <!-- ===== HEADER ===== -->
     <div class="header">
         <button class="menu-toggle" id="menuToggle">☰ Меню</button>
-        
+
         <form class="search-container" method="get" id="searchForm">
             <input
                 type="text"
@@ -28,9 +30,8 @@
             </button>
             <div class="filter-content" id="filterContent">
                 <form id="filterForm" method="get">
-                    <!-- Скрытое поле для логина -->
                     <input type="hidden" name="login" value="{{ login or '' }}">
-                    
+
                     <div class="filter-group">
                         <label>Тип машины:</label>
                         <select class="filter-select" name="machine_type">
@@ -39,21 +40,23 @@
                             <option value="virtual" {% if machine_type == 'virtual' %}selected{% endif %}>Виртуальная</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-buttons">
                         <button type="submit" class="apply-filter">Применить</button>
                         {% if machine_type and machine_type != 'all' %}
-                        <a href="?login={{ login or '' }}" class="clear-filter" style="display:inline-block; background:#e74c3c; color:white; padding:8px 15px; border-radius:4px; text-decoration:none; width: 100%; font-size: 14px; text-align: center; margin-top: 5px;">Сбросить</a>
+                        <a href="?login={{ login or '' }}" class="clear-filter">
+                            Сбросить
+                        </a>
                         {% endif %}
                     </div>
                 </form>
             </div>
         </div>
-        
+
         <div class="user-login-container">
-    <span class="user-icon">👤</span>
-    <span class="user-login-text">{{ user_login }}</span>
-</div>
+            <span class="user-icon">👤</span>
+            <span class="user-login-text">{{ user_login }}</span>
+        </div>
     </div>
 
     <!-- ===== SIDEBAR ===== -->
@@ -63,10 +66,7 @@
             <button class="menu-item">Пользователи</button>
             <button class="menu-item">Отчёты</button>
             <button class="menu-item">Настройки</button>
-            <!-- Кнопка выхода в меню -->
-            <a href="/logout" class="menu-item logout-button">
-                Выйти
-            </a>
+            <a href="/logout" class="menu-item logout-button">Выйти</a>
         </nav>
     </div>
 
@@ -77,13 +77,15 @@
             <p>Поиск физических и виртуальных машин по логину пользователя</p>
 
             {% if data %}
-            <!-- ===== TABLE WITH DATA ===== -->
             <table>
                 <thead>
                     <tr>
                         <th>Логин</th>
                         <th>Имя машины</th>
                         <th>Тип машины</th>
+                        <th>Версия ОС</th>
+                        <th>Доп. ПО</th>
+                        <th>Ссылка на образ ОС</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,26 +102,34 @@
                                 {{ row.machine_type }}
                             {% endif %}
                         </td>
+                        <td>{{ row.os_version }}</td>
+                        <td>{{ row.software }}</td>
+                        <td>
+                            {% if row.os_image_url %}
+                            <a href="{{ row.os_image_url }}" target="_blank">
+                            Перейти к образу
+                            </a>
+                            {% else %}
+                            —
+                            {% endif %}
+                            </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
 
             {% elif login %}
-            <!-- ===== NO DATA ===== -->
             <div class="no-data show">
                 <div class="warning-sign">⚠</div>
                 <h2>Данные не найдены</h2>
                 <p>По логину "{{ login }}" информация отсутствует</p>
             </div>
-            {% endif %}
 
-            {% if not login and not data %}
-            <!-- ===== INITIAL STATE ===== -->
+            {% else %}
             <div class="no-data">
                 <div class="info-sign">ℹ️</div>
                 <h2>Начните поиск</h2>
-                <p>Введите логин пользователя в поле поиска для получения информации</p>
+                <p>Введите логин пользователя в поле поиска</p>
             </div>
             {% endif %}
         </div>
@@ -128,58 +138,17 @@
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-content">
-            <p>
-                © 2025 <span class="watermark">IT Inventory System</span>
-            </p>
+            <p>© 2025 <span class="watermark">IT Inventory System</span></p>
         </div>
     </footer>
 
-    <!-- Подключение внешнего JavaScript файла -->
     <script src="../static/js/script.js"></script>
-    
+
     {% if not cookies_accepted %}
     <div id="cookieReminder" class="cookie-reminder">
-        <p>🍪 Вы не полностью приняли использование cookies. Некоторые функции могут быть ограничены.</p>
+        <p>🍪 Вы не полностью приняли использование cookies.</p>
         <button onclick="window.location.href='/'">Настроить cookies</button>
     </div>
-
-    <style>
-    .cookie-reminder {
-        position: fixed;
-        bottom: 5px;
-        right: 20px;
-        background: rgba(255, 193, 7, 0.1);
-        border: 1px solid rgba(255, 193, 7, 0.3);
-        border-radius: 8px;
-        padding: 10px 15px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        backdrop-filter: blur(10px);
-        z-index: 999;
-    }
-
-    .cookie-reminder p {
-        margin: 0;
-        color: #fcfcfc;
-        font-size: 14px;
-    }
-
-    .cookie-reminder button {
-        background: #ffc107;
-        color: #856404;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-    .cookie-reminder button:hover {
-        background: #e0a800;
-    }
-    </style>
     {% endif %}
 </body>
 </html>

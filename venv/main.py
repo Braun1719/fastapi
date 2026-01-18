@@ -25,21 +25,17 @@ templates = Jinja2Templates(directory="templates")
 DB_PATH = os.path.join("venv", "newdb")
 
 def get_db():
-    """Создаем новое соединение каждый раз"""
     conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_tables():
-    """Создаем правильную таблицу"""
     conn = get_db()
     cursor = conn.cursor()
     
     try:
-        # Удаляем старую таблицу если есть
         cursor.execute("DROP TABLE IF EXISTS user_sessions")
         
-        # Создаем правильную таблицу
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS user_sessions (
                 session_id TEXT PRIMARY KEY,
@@ -615,12 +611,12 @@ def main_page(request: Request, login: str = "", machine_type: str = ""):
             logger.debug(f"Пользователь {session_info['user_login']}, время до истечения: {time_left}")
         
         # Получаем данные для таблицы
-        query = "SELECT login, machine_name, machine_type FROM users WHERE 1=1"
+        query = "SELECT login, machine_name, machine_type, os_version, software, os_image_url FROM users WHERE 1=1"
         params = []
         
         if login:
             query += " AND login LIKE ?"
-            params.append(f"%{login}%")
+            params.append(f"%{login}%")  
         
         if machine_type and machine_type != "all":
             query += " AND machine_type = ?"

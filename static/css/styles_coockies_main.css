@@ -1,0 +1,45 @@
+.cookie-reminder {
+    position: fixed;
+    bottom: 5px;
+    right: 20px;
+
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 8px;
+
+    padding: 10px 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    z-index: 999;
+}
+
+.cookie-reminder p {
+    margin: 0;
+    color: #fcfcfc;
+    font-size: 14px;
+}
+
+.cookie-reminder button {
+    background: #ffc107;
+    color: #856404;
+
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+
+    transition: background 0.2s ease;
+}
+
+.cookie-reminder button:hover {
+    background: #e0a800;
+}
